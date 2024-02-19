@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Page</title>
+    <style>
+        /* CSS for styling */
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .item {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Restaurant Menu</h1>
+        <button onclick="toggleOffer()">Add Offer</button>
+        <div id="offer" style="display: none;">
+            <input type="text" placeholder="Offer description" id="offerDesc">
+            <button onclick="addOffer()">Submit</button>
+        </div>
+        <h2>Add Item</h2>
+        <input type="text" placeholder="Item Name" id="itemName">
+        <input type="text" placeholder="Description" id="itemDesc">
+        <input type="number" placeholder="Price" id="itemPrice">
+        <button onclick="addItem()">Add Item</button>
+        <div id="menu"></div>
+    </div>
+
+    <script>
+        // JavaScript for adding and removing items
+        let menuItems = [];
+
+        function addItem() {
+            let name = document.getElementById('itemName').value;
+            let desc = document.getElementById('itemDesc').value;
+            let price = document.getElementById('itemPrice').value;
+            if (name && desc && price) {
+                menuItems.push({ name, desc, price });
+                displayMenu();
+            }
+        }
+
+        function removeItem(index) {
+            menuItems.splice(index, 1);
+            displayMenu();
+        }
+
+        function displayMenu() {
+            let menuDiv = document.getElementById('menu');
+            menuDiv.innerHTML = '';
+            menuItems.forEach((item, index) => {
+                let itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+                itemDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>${item.desc}</p>
+                    <p>Price: $${item.price}</p>
+                    <button onclick="removeItem(${index})">Remove</button>
+                `;
+                menuDiv.appendChild(itemDiv);
+            });
+        }
+
+        function toggleOffer() {
+            let offerDiv = document.getElementById('offer');
+            offerDiv.style.display = offerDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addOffer() {
+            let offerDesc = document.getElementById('offerDesc').value;
+            if (offerDesc) {
+                document.getElementById('offer').style.display = 'none';
+                document.getElementById('menu').innerHTML = `<h2>Special Offer: ${offerDesc}</h2>`;
+            }
+        }
+    </script>
+</body>
+</html>
