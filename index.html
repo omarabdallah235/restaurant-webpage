@@ -1,84 +1,73 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Page</title>
-    <style>
-        /* CSS for styling */
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-        }
-        .item {
-            margin-bottom: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Menu</title>
+<style>
+  body { font-family: Arial, sans-serif; }
+  .offer { background-color: yellow; padding: 10px; text-align: center; }
+  .menu-item { border: 1px solid #ddd; margin-bottom: 10px; padding: 10px; }
+  .menu-item input, .menu-item textarea { width: 100%; margin-bottom: 10px; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Restaurant Menu</h1>
-        <button onclick="toggleOffer()">Add Offer</button>
-        <div id="offer" style="display: none;">
-            <input type="text" placeholder="Offer description" id="offerDesc">
-            <button onclick="addOffer()">Submit</button>
-        </div>
-        <h2>Add Item</h2>
-        <input type="text" placeholder="Item Name" id="itemName">
-        <input type="text" placeholder="Description" id="itemDesc">
-        <input type="number" placeholder="Price" id="itemPrice">
-        <button onclick="addItem()">Add Item</button>
-        <div id="menu"></div>
-    </div>
 
-    <script>
-        // JavaScript for adding and removing items
-        let menuItems = [];
+<div class="offer">
+  <h2>Special Offer!</h2>
+  <p id="offerText">Get a free dessert with every main course!</p>
+</div>
 
-        function addItem() {
-            let name = document.getElementById('itemName').value;
-            let desc = document.getElementById('itemDesc').value;
-            let price = document.getElementById('itemPrice').value;
-            if (name && desc && price) {
-                menuItems.push({ name, desc, price });
-                displayMenu();
-            }
-        }
+<h3>Add a Menu Item</h3>
+<div class="menu-item">
+  <input type="text" id="itemName" placeholder="Item Name">
+  <textarea id="itemDesc" placeholder="Item Description"></textarea>
+  <input type="text" id="itemPrice" placeholder="Price">
+  <button onclick="addItem()">Add Item</button>
+</div>
 
-        function removeItem(index) {
-            menuItems.splice(index, 1);
-            displayMenu();
-        }
+<h3>Menu</h3>
+<ul id="menuList"></ul>
 
-        function displayMenu() {
-            let menuDiv = document.getElementById('menu');
-            menuDiv.innerHTML = '';
-            menuItems.forEach((item, index) => {
-                let itemDiv = document.createElement('div');
-                itemDiv.classList.add('item');
-                itemDiv.innerHTML = `
-                    <h3>${item.name}</h3>
-                    <p>${item.desc}</p>
-                    <p>Price: $${item.price}</p>
-                    <button onclick="removeItem(${index})">Remove</button>
-                `;
-                menuDiv.appendChild(itemDiv);
-            });
-        }
+<script>
+let menuItems = [];
 
-        function toggleOffer() {
-            let offerDiv = document.getElementById('offer');
-            offerDiv.style.display = offerDiv.style.display === 'none' ? 'block' : 'none';
-        }
+function addItem() {
+  const name = document.getElementById('itemName').value;
+  const desc = document.getElementById('itemDesc').value;
+  const price = document.getElementById('itemPrice').value;
+  
+  if (name && desc && price) {
+    const item = { name, desc, price };
+    menuItems.push(item);
+    updateMenu();
+  } else {
+    alert('Please fill out all fields.');
+  }
+}
 
-        function addOffer() {
-            let offerDesc = document.getElementById('offerDesc').value;
-            if (offerDesc) {
-                document.getElementById('offer').style.display = 'none';
-                document.getElementById('menu').innerHTML = `<h2>Special Offer: ${offerDesc}</h2>`;
-            }
-        }
-    </script>
+function removeItem(index) {
+  menuItems.splice(index, 1);
+  updateMenu();
+}
+
+function updateMenu() {
+  const menuList = document.getElementById('menuList');
+  menuList.innerHTML = '';
+
+  menuItems.forEach((item, index) => {
+    menuList.innerHTML += `
+      <li class="menu-item">
+        <h4>${item.name} - $${item.price}</h4>
+        <p>${item.desc}</p>
+        <button onclick="removeItem(${index})">Remove Item</button>
+      </li>
+    `;
+  });
+}
+</script>
+
 </body>
 </html>
+```
